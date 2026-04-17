@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  .text-edge-outline {
+    -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+  }
+} 
+body {
+  background-color: #000000 !important;
+  background-image: radial-gradient(circle at 50% 100%, #2a0808 0%, #000000 50%) !important;
+  color: white !important;
+}
