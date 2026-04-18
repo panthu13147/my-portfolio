@@ -6,9 +6,21 @@
   .text-edge-outline {
     -webkit-text-stroke: 1px rgba(255,255,255,0.3);
   }
-} 
-body {
-  background-color: #000000 !important;
-  background-image: radial-gradient(circle at 50% 100%, #2a0808 0%, #000000 50%) !important;
-  color: white !important;
+  
+  /* Cosmic Space - Light Asymmetrical Nebula */
+  body {
+    background-color: #030308 !important; /* Deepest space black */
+    background-image: 
+      /* Top Left - Soft Blue */
+      radial-gradient(circle at 10% 10%, rgba(30, 60, 255, 0.04) 0%, transparent 50%),
+      /* Center Right - Soft Purple */
+      radial-gradient(circle at 85% 40%, rgba(120, 30, 255, 0.03) 0%, transparent 55%),
+      /* Bottom Left - Deep Cyan */
+      radial-gradient(circle at 20% 90%, rgba(0, 150, 255, 0.04) 0%, transparent 60%),
+      /* Top Right - Distant Pinkish Glow */
+      radial-gradient(circle at 90% 10%, rgba(200, 50, 255, 0.02) 0%, transparent 40%) !important;
+    
+    color: white !important;
+    /* Grid stars hata diye hain, ab template ke native particles apna magic dikhayenge */
+  }
 }
