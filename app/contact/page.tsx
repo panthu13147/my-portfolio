@@ -1,63 +1,97 @@
 "use client";
-import { Github, Mail , Linkedin } from "lucide-react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { Navigation } from "../components/nav";
-import { Card } from "../components/card";
 
-const socials = [
-	{
-		icon: <Linkedin size={20} />,
-		href: "https://linkedin.com/in/panthu13147",
-		label: "LinkedIn",
-		handle: "@panthu13147",
-	},
-	{
-		icon: <Mail size={20} />,
-		href: "mailto:panthu13147@gmail.com",
-		label: "Email",
-		handle: "@panthu13147",
-	},
-	{
-		icon: <Github size={20} />,
-		href: "https://github.com/panthu13147",
-		label: "Github",
-		handle: "@panthu13147",
-	},
-];
+export default function Contact() {
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [status, setStatus] = useState("idle"); // 'idle', 'loading', 'success', 'error'
 
-export default function Example() {
-	return (
-		<div className=" bg-gradient-to-tl from-zinc-900/0 via-zinc-900 to-zinc-900/0">
-			<Navigation />
-			<div className="container flex items-center justify-center min-h-screen px-4 mx-auto">
-				<div className="grid w-full grid-cols-1 gap-8 mx-auto mt-32 sm:mt-0 sm:grid-cols-3 lg:gap-16">
-					{socials.map((s) => (
-						<Card>
-							<Link
-								href={s.href}
-								target="_blank"
-								className="p-4 relative flex flex-col items-center gap-4 duration-700 group md:gap-8 md:py-24  lg:pb-48  md:p-16"
-							>
-								<span
-									className="absolute w-px h-2/3 bg-gradient-to-b from-zinc-500 via-zinc-500/50 to-transparent"
-									aria-hidden="true"
-								/>
-								<span className="relative z-10 flex items-center justify-center w-12 h-12 text-sm duration-1000 border rounded-full text-zinc-200 group-hover:text-white group-hover:bg-zinc-900 border-zinc-500 bg-zinc-900 group-hover:border-zinc-200 drop-shadow-orange">
-									{s.icon}
-								</span>{" "}
-								<div className="z-10 flex flex-col items-center">
-									<span className="lg:text-xl font-medium duration-150 xl:text-3xl text-zinc-200 group-hover:text-white font-display">
-										{s.handle}
-									</span>
-									<span className="mt-4 text-sm text-center duration-1000 text-zinc-400 group-hover:text-zinc-200">
-										{s.label}
-									</span>
-								</div>
-							</Link>
-						</Card>
-					))}
-				</div>
-			</div>
-		</div>
-	);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("loading");
+
+    try {
+      // 🚀 THE BRIDGE: Sending data to Python!
+      const res = await fetch("http://localhost:8000/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (res.ok) {
+        setStatus("success");
+        setFormData({ name: "", email: "", message: "" }); // Form clear kar do
+      } else {
+        setStatus("error");
+      }
+    } catch (error) {
+      setStatus("error");
+    }
+  };
+
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white relative">
+      <Link href="/" className="absolute top-8 left-8 text-zinc-500 hover:text-white duration-200">
+        ← Back to Base
+      </Link>
+
+      <div className="w-full max-w-md p-8 border border-zinc-800 bg-zinc-900/50 backdrop-blur-md rounded-xl shadow-2xl relative z-10">
+        <h2 className="text-3xl font-bold mb-6 text-zinc-100">Secure Comms Channel</h2>
+        
+        {status === "success" ? (
+          <div className="text-center py-10 text-green-400 border border-green-500/30 bg-green-500/10 rounded-lg animate-fade-in">
+            <p>Transmission Successful.</p>
+            <p className="text-sm mt-2 text-zinc-400">Panth's Engine has received your data.</p>
+            <button onClick={() => setStatus("idle")} className="mt-6 text-xs text-zinc-500 hover:text-white">Send another</button>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4 animate-fade-in">
+            <div>
+              <label className="block text-xs font-medium text-zinc-400 mb-1">IDENTIFICATION</label>
+              <input 
+                type="text" 
+                required
+                value={formData.name}
+                onChange={(e) => setFormData({...formData, name: e.target.value})}
+                className="w-full bg-black border border-zinc-700 rounded-md p-3 text-sm focus:outline-none focus:border-zinc-400 transition-colors"
+                placeholder="John Doe"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-xs font-medium text-zinc-400 mb-1">RETURN ADDRESS</label>
+              <input 
+                type="email" 
+                required
+                value={formData.email}
+                onChange={(e) => setFormData({...formData, email: e.target.value})}
+                className="w-full bg-black border border-zinc-700 rounded-md p-3 text-sm focus:outline-none focus:border-zinc-400 transition-colors"
+                placeholder="john@example.com"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-zinc-400 mb-1">TRANSMISSION DATA</label>
+              <textarea 
+                required
+                rows={4}
+                value={formData.message}
+                onChange={(e) => setFormData({...formData, message: e.target.value})}
+                className="w-full bg-black border border-zinc-700 rounded-md p-3 text-sm focus:outline-none focus:border-zinc-400 transition-colors resize-none"
+                placeholder="Enter your message here..."
+              ></textarea>
+            </div>
+
+            <button 
+              type="submit" 
+              disabled={status === "loading"}
+              className="mt-4 bg-white text-black font-semibold py-3 rounded-md hover:bg-zinc-200 transition-colors disabled:opacity-50"
+            >
+              {status === "loading" ? "UPLOADING..." : "EXECUTE TRANSMISSION"}
+            </button>
+          </form>
+        )}
+      </div>
+    </div>
+  );
 }
