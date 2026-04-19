@@ -9,7 +9,7 @@ export default function EngineRoom() {
     setServerData("Pinging HFT Engine...");
     try {
       // 🚀 THE BRIDGE: Making the call to Port 8000
-      const response = await fetch("http://localhost:8000/");
+      const response = await fetch("https://hft-engine-2ljd.onrender.com/");
       const data = await response.json();
       
       // Formatting JSON to look like a hacker terminal
