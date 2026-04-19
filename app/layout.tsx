@@ -3,7 +3,7 @@ import { Inter } from "@next/font/google";
 import LocalFont from "@next/font/local";
 import { Metadata } from "next";
 import { Analytics } from "./components/analytics";
-
+import HftTicker from "./HftTicker";
 export const metadata: Metadata = {
   title: {
     default: "Panth Shah | Portfolio",
@@ -79,7 +79,12 @@ export default function RootLayout({
         </div>
         
         {/* Tera baaki ka content iske upar aayega */}
+        {/* Tera baaki ka content iske upar aayega */}
+       {/* Tera baaki ka content iske upar aayega */}
         {children}
+        
+        {/* GLOBAL HFT TICKER */}
+        <HftTicker />
       </body>
     </html>
   );
